@@ -36,11 +36,13 @@
         })
       }
       var constraints = (window.constraints = {
-        audio: false,
-        // video: {
-        //   sourceId: 'default',
-        //   facingMode: { exact: 'user' },
-        // },
+        // audio: false,
+        video: {
+          // sourceId: 'default',
+          // facingMode: { exact: 'user' },
+          width: 1280,
+          height: 720,
+        },
       })
       //   navigator.mediaDevices
       //     .getUserMedia(constraints)
