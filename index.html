@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>Document</title>
+    <style>
+      #container {
+        width: 100vw;
+        height: 100vh;
+      }
+    </style>
+  </head>
+  <script type="text/javascript">
+    window._AMapSecurityConfig = {
+      securityJsCode: '94e3a0854e3307154d9fbcf20aa1547f',
+    }
+  </script>
+  <script
+    type="text/javascript"
+    src="https://webapi.amap.com/maps?v=2.0&key=79a77af09507b2a1dd1a88d66abb0160"
+  ></script>
+  <body>
+    <div id="container"></div>
+  </body>
+  <script>
+    var map = new AMap.Map('container', {
+      zoom: 13, //级别
+    })
+
+    AMap.plugin('AMap.Geolocation', function () {
+      var geolocation = new AMap.Geolocation({
+        // 是否使用高精度定位，默认：true
+        enableHighAccuracy: true,
+        // 设置定位超时时间，默认：无穷大
+        timeout: 10000,
+        // 定位按钮的停靠位置的偏移量
+        offset: [10, 20],
+        //  定位成功后调整地图视野范围使定位位置及精度范围视野内可见，默认：false
+        zoomToAccuracy: true,
+        //  定位按钮的排放位置,  RB表示右下
+        position: 'RB',
+      })
+
+      geolocation.getCurrentPosition(function (status, result) {
+        if (status == 'complete') {
+          onComplete(result)
+        } else {
+          onError(result)
+        }
+      })
+
+      function onComplete(data) {
+        // data是具体的定位信息
+      }
+
+      function onError(data) {
+        // 定位出错
+      }
+    })
+  </script>
+</html>
