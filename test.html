@@ -7,28 +7,60 @@
     <title>Document</title>
   </head>
   <script>
-    function invokeCamera() {
+    function invokeCamera(mediaStream) {
       // 想要获取一个最接近 1280x720 的相机分辨率
-      var constraints = { audio: true, video: { width: 1280, height: 720 } }
+      var constrains = { audio: true, video: { width: 1280, height: 720 } }
+      function showCamera() {
+        var video = document.querySelector('video')
+        video.srcObject = mediaStream
+        video.onloadedmetadata = function (e) {
+          video.play()
+        }
+      }
+      // navigator.mediaDevices
+      //   .getUserMedia({
+      //     audio: false,
+      //     video: {
+      //       sourceId: 'default',
+      //       facingMode: { exact: 'user' },
+      //     },
+      //   })
+      //   .then(function (mediaStream) {
+      //     var video = document.querySelector('video')
+      //     video.srcObject = mediaStream
+      //     video.onloadedmetadata = function (e) {
+      //       video.play()
+      //     }
+      //   })
+      //   .catch(function (err) {
+      //     console.log(err.name + ': ' + err.message)
+      //   }) // 总是在最后检查错误
 
-      navigator.mediaDevices
-        .getUserMedia({
-          audio: false,
-          video: {
-            sourceId: 'default',
-            facingMode: { exact: 'user' },
-          },
-        })
-        .then(function (mediaStream) {
-          var video = document.querySelector('video')
-          video.srcObject = mediaStream
-          video.onloadedmetadata = function (e) {
-            video.play()
-          }
-        })
-        .catch(function (err) {
-          console.log(err.name + ': ' + err.message)
-        }) // 总是在最后检查错误
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        //最新标准API(新版浏览器https)
+        navigator.mediaDevices
+          .getUserMedia(constrains)
+          .then(() => showCamera(mediaStream))
+      } else if (navigator.webkitGetUserMedia) {
+        //like12 modified,20210628,不是这种调用方法 应该为后者
+        //webkit内核浏览器(老版浏览器)
+        //navigator.webkitGetUserMedia(constrains).then(success).catch(error);
+        navigator.webkitGetUserMedia({ video: true }, () =>
+          showCamera(mediaStream)
+        )
+      } else if (navigator.mozGetUserMedia) {
+        //Firefox浏览器
+        navigator
+          .mozGetUserMedia(constrains)
+          .then((mediaStream) => showCamera(mediaStream))
+          .catch(error)
+      } else if (navigator.getUserMedia) {
+        //旧版API
+        navigator
+          .getUserMedia(constrains)
+          .then((mediaStream) => showCamera(mediaStream))
+          .catch(error)
+      }
     }
   </script>
   <body>

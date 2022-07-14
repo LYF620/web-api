@@ -7,11 +7,18 @@
     <title>Document</title>
   </head>
   <script>
+    console.log(1)
+    alert(`mediaDevices:${'mediaDevices' in navigator}`)
+    alert(`webkitGetUserMedia:${'webkitGetUserMedia' in navigator}`)
+    alert(`mozGetUserMedia:${'mozGetUserMedia' in navigator}`)
+    alert(`getUserMedia:${'getUserMedia' in navigator}`)
+
     function moveToCameraAVG() {
       var self = this
       if (navigator.mediaDevices === undefined) {
         navigator.mediaDevices = {}
       }
+
       if (navigator.mediaDevices.getUserMedia === undefined) {
         navigator.mediaDevices.getUserMedia = function (constraints) {
           var getUserMedia =
@@ -44,22 +51,7 @@
           height: 720,
         },
       })
-      //   navigator.mediaDevices
-      //     .getUserMedia(constraints)
-      //     .then(function (stream) {
-      //       var video = document.getElementById('video')
-      //       try {
-      //         window.stream = stream
-      //         video.srcObject = stream
-      //       } catch (error) {
-      //         video.src = window.URL.createObjectURL(stream)
-      //       }
-      //       self.localMediaStream = stream
-      //       video.play()
-      //     })
-      //     .catch(function (err) {
-      //       alert(err.name + ': ' + err.message)
-      //     })
+
       navigator.mediaDevices
         .getUserMedia(constraints)
         .then(function (stream) {
